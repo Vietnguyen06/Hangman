@@ -1,3 +1,52 @@
-ftyfygf
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p id="resultat"></p>
+    <p id="hint"></p>
+    <button>Nytt ord</button>
+    <h2 id="tastatur"></h2>
+</body>
+</html>
+<script>
+    let trykketEl = document.querySelector("#tastatur")
+    let bodyEl = document.querySelector("body")
+    let resultatEl = document.querySelector("#resultat")
+    let buttonEl = document.querySelector("button")
+    let hintEl = document.querySelector("#hint")
+    let riktigOrd = 0
 
-tfghfdgj
+    buttonEl.addEventListener("click", finnOrd)
+
+    async function finnOrd() {
+        const url = "https://www.wordgamedb.com/api/v1/words/random"
+        const data = await fetch (url)
+        const json = await data.json()
+        let ord = json.word
+        let hint = json.hint
+        riktigOrd = ord.toUpperCase()
+        console.log(ord);
+        console.log(hint);
+        resultatEl.innerHTML="The word is "+riktigOrd.toUpperCase()
+        hintEl.innerHTML="<i>'"+hint+"'</i>"
+    }
+
+    bodyEl.addEventListener("keydown", sjekkKnapp)
+    function sjekkKnapp(e) {
+        let tastOrd = String.fromCharCode(e.keyCode)
+        let tast = e.keyCode
+        console.log(tastOrd);
+        console.log(e.keyCode);
+        if (riktigOrd.includes(tastOrd)) {
+            console.log("Bokstaven finnes");
+        }
+        else {
+            console.log("Bokstaven finnes ikke");
+        }
+    }
+    // Dette er min kode for api //
+</script>
