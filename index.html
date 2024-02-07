@@ -10,6 +10,37 @@
     <p id="hint"></p>
     <button>Nytt ord</button>
     <h2 id="tastatur"></h2>
+        <div>
+    <h2 id="trykket"> - </h2>
+    <h2 id="ganger">du har brukt 10 forsøk</h2>
+    <button class="knapp"> </button>
+    <button class="knapp">a</button>
+    <button class="knapp">b</button>
+    <button class="knapp">c</button>
+    <button class="knapp">d</button>
+    <button class="knapp">e</button>
+    <button class="knapp">f</button>
+    <button class="knapp">g</button>
+    <button class="knapp">h</button>
+    <button class="knapp">i</button>
+    <button class="knapp">j</button>
+    <button class="knapp">k</button>
+    <button class="knapp">l</button>
+    <button class="knapp">m</button>
+    <button class="knapp">n</button>
+    <button class="knapp">o</button>
+    <button class="knapp">p</button>
+    <button class="knapp">q</button>
+    <button class="knapp">r</button>
+    <button class="knapp">s</button>
+    <button class="knapp">t</button>
+    <button class="knapp">u</button>
+    <button class="knapp">v</button>
+    <button class="knapp">w</button>
+    <button class="knapp">x</button>
+    <button class="knapp">y</button>
+    <button class="knapp">z</button>
+    </div>
 </body>
 </html>
 <script>
@@ -21,6 +52,20 @@
     let riktigOrd = 0
 
     buttonEl.addEventListener("click", finnOrd)
+
+    let bokstaver = []
+    let trykketEl = document.querySelector("#trykket")
+    let bodyEl = document.querySelector("body")
+    let divEl = document.querySelector("div")
+    let gangerEl = document.querySelector("#ganger")
+    const buttons = document.querySelectorAll(".knapp");
+   
+  
+    bodyEl.addEventListener("keydown", tast);
+    bodyEl.addEventListener("click", trykk);   
+   
+    let attempts = 0
+    let forok = 0
 
     async function finnOrd() {
         const url = "https://www.wordgamedb.com/api/v1/words/random"
@@ -47,6 +92,48 @@
         else {
             console.log("Bokstaven finnes ikke");
         }
+    }
+
+      function tast(e){
+        trykketEl.innerHTML="key register: "+e.keyCode;
+        let klick=String.fromCharCode(e.keyCode);
+        trykketEl.innerHTML="key register "+ klick
+     
+        if (e.keyCode==78){
+            forok++
+            console.log("riktig")
+        }
+        else{
+            attempts++;
+            svar()
+        }
+    }
+
+ 
+  
+    for (let i = 0; i <= 0; i++) {
+        buttons[i].addEventListener("click", trykk);
+    }
+
+    function trykk(e) {
+        if(e.target.tagName === "BUTTON"){
+            trykketEl.innerHTML = e.target.innerText
+
+            if (e.target.innerText==="n"){
+            forok++
+            console.log("riktig")
+        }
+        else{
+            attempts++;
+            svar()
+        }
+
+        }
+    }
+    function svar(){
+        let fasit = 10 - attempts + forok
+        gangerEl.innerHTML="du har: "+ fasit+ " forsøk"
+
     }
     // Dette er min kode for api //
 </script>
