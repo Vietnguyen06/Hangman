@@ -15,6 +15,13 @@
         border-bottom: 2px solid black;
         width: 38px;
     }
+    .gjemTekst {
+        visibility: hidden;
+        text-align: center;
+    }
+    .gjettet {
+        font-size: 50px;
+    }
     button {
         border-radius: 25% ;
     }
@@ -69,6 +76,7 @@
     let buttonEl = document.querySelector("button")
     let hintEl = document.querySelector("#hint")
     let riktigOrd = 0
+    
 
     buttonEl.addEventListener("click", finnOrd)
 
@@ -82,14 +90,19 @@
         riktigOrd = ord
         console.log(ord);
         console.log(hint);
+        resultatEl
         for (let i = 0; i < ord.length; i++) {
+            let gjemtBokstContain = document.createElement("div")
             let gjemtBokst = document.createElement("p")
-            gjemtBokst.className = "gjemt"
-            gjemtBokst.innerText = " "
-            resultatEl.appendChild(gjemtBokst)
+            gjemtBokstContain.className = "gjemt"
+            gjemtBokst.className = "gjemTekst"
+            gjemtBokst.innerText = riktigOrd[i]
+            gjemtBokstContain.appendChild(gjemtBokst)
+            resultatEl.appendChild(gjemtBokstContain)
             
         }
         hintEl.innerHTML="<i>'"+hint+"'</i>"
+        buttonEl.removeEventListener("click", finnOrd)
     }
   
     for (let i = 0; i < buttons.length; i++) {
@@ -101,6 +114,9 @@
         console.log(e.target.innerText);
         if (riktigOrd.includes(tastOrd)) {
             console.log("Bokstaven finnes");
+            for (let i = 0; i < riktigOrd.length; i++) {
+                
+            }
         }
         else {
             console.log("Bokstaven finnes ikke");
