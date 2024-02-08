@@ -31,6 +31,7 @@
     <p id="hint"></p>
     <button>Nytt ord</button>
     <div>
+         <p id="oversikt"> Bokstav er: </p>
         <h2 id="ganger">du har brukt 10 forsøk</h2>
         <button class="knapp">A</button>
         <button class="knapp">B</button>
@@ -109,25 +110,33 @@
         buttons[i].addEventListener("click", trykk);
     }
 
-    function trykk(e) {
+  function trykk(e) {
+        
         let tastOrd = e.target.innerText
+        e.target.addEventListener("click", trykk)
         console.log(e.target.innerText);
         if (riktigOrd.includes(tastOrd)) {
             console.log("Bokstaven finnes");
-            for (let i = 0; i < riktigOrd.length; i++) {
-                
-            }
+            oversiktEl.innerHTML="Bokstav er riktig"
+            e.target.style.backgroundColor = "green"
+
         }
         else {
             console.log("Bokstaven finnes ikke");
+            oversiktEl.innerHTML="Bokstav er feil, tenk hardere"
+            e.target.style.backgroundColor = "red"
             attempts++;
             svar()
         }
+        e.target.removeEventListener("click", trykk)
+  }
         
-    }
+        
+
     function svar(){
         let fasit = 10 - attempts + forok
         gangerEl.innerHTML="du har: "+ fasit+ " forsøk"
 
+    }
     }
 </script>
