@@ -22,9 +22,6 @@
     .gjettet {
         font-size: 50px;
     }
-    button {
-        border-radius: 25% ;
-    }
 </style>
 <body>
     <div id="resultat"></div>
@@ -83,8 +80,7 @@
     buttonEl.addEventListener("click", finnOrd)
 
     async function finnOrd() {
-        const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
-        const url2 = "https://random-word-api.herokuapp.com/word" // hard
+        const url = "https://www.wordgamedb.com/api/v1/words/random" 
         const data = await fetch (url)
         const json = await data.json()
         let ord = json.word.toUpperCase()
