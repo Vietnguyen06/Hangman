@@ -5,45 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<style>
+    #resultat {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+    .gjemt {
+        border-bottom: 2px solid black;
+        width: 38px;
+    }
+    button {
+        border-radius: 25% ;
+    }
+</style>
 <body>
-    <p id="resultat"></p>
+    <div id="resultat"></div>
     <p id="hint"></p>
     <button>Nytt ord</button>
-    <h2 id="tastatur"></h2>
-        <div>
-    <h2 id="trykket"> - </h2>
-    <h2 id="ganger">du har brukt 10 forsøk</h2>
-    <button class="knapp">a</button>
-    <button class="knapp">b</button>
-    <button class="knapp">c</button>
-    <button class="knapp">d</button>
-    <button class="knapp">e</button>
-    <button class="knapp">f</button>
-    <button class="knapp">g</button>
-    <button class="knapp">h</button>
-    <button class="knapp">i</button>
-    <button class="knapp">j</button>
-    <button class="knapp">k</button>
-    <button class="knapp">l</button>
-    <button class="knapp">m</button>
-    <button class="knapp">n</button>
-    <button class="knapp">o</button>
-    <button class="knapp">p</button>
-    <button class="knapp">q</button>
-    <button class="knapp">r</button>
-    <button class="knapp">s</button>
-    <button class="knapp">t</button>
-    <button class="knapp">u</button>
-    <button class="knapp">v</button>
-    <button class="knapp">w</button>
-    <button class="knapp">x</button>
-    <button class="knapp">y</button>
-    <button class="knapp">z</button>
+    <div>
+        <h2 id="ganger">du har brukt 10 forsøk</h2>
+        <button class="knapp">A</button>
+        <button class="knapp">B</button>
+        <button class="knapp">C</button>
+        <button class="knapp">D</button>
+        <button class="knapp">E</button>
+        <button class="knapp">F</button>
+        <button class="knapp">G</button>
+        <button class="knapp">H</button>
+        <button class="knapp">I</button>
+        <button class="knapp">J</button>
+        <button class="knapp">K</button>
+        <button class="knapp">L</button>
+        <button class="knapp">M</button>
+        <button class="knapp">N</button>
+        <button class="knapp">O</button>
+        <button class="knapp">P</button>
+        <button class="knapp">Q</button>
+        <button class="knapp">R</button>
+        <button class="knapp">S</button>
+        <button class="knapp">T</button>
+        <button class="knapp">U</button>
+        <button class="knapp">V</button>
+        <button class="knapp">W</button>
+        <button class="knapp">X</button>
+        <button class="knapp">Y</button>
+        <button class="knapp">Z</button>
     </div>
 </body>
 </html>
 
-<script>
+<script> 
+    let trykketEl = document.querySelector("#trykket")
+    let bodyEl = document.querySelector("body")
+    let divEl = document.querySelector("div")
+    let gangerEl = document.querySelector("#ganger")
+    let buttons = document.querySelectorAll(".knapp");  
+   
+    let attempts = 0
+    let forok = 0
+
     let resultatEl = document.querySelector("#resultat")
     let buttonEl = document.querySelector("button")
     let hintEl = document.querySelector("#hint")
@@ -51,65 +72,42 @@
 
     buttonEl.addEventListener("click", finnOrd)
 
-    let bokstaver = []
-    let trykketEl = document.querySelector("#trykket")
-    let bodyEl = document.querySelector("body")
-    let divEl = document.querySelector("div")
-    let gangerEl = document.querySelector("#ganger")
-    const buttons = document.querySelectorAll(".knapp");
-   
-  
-    bodyEl.addEventListener("keydown", tast);
-    bodyEl.addEventListener("click", trykk);   
-   
-    let attempts = 0
-    let forok = 0
-
     async function finnOrd() {
-        const url = "https://www.wordgamedb.com/api/v1/words/random"
+        const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
+        const url2 = "https://random-word-api.herokuapp.com/word" // hard
         const data = await fetch (url)
         const json = await data.json()
-        let ord = json.word
+        let ord = json.word.toUpperCase()
         let hint = json.hint
-        riktigOrd = ord.toUpperCase()
+        riktigOrd = ord
         console.log(ord);
         console.log(hint);
-        resultatEl.innerHTML="The word is "+riktigOrd.toUpperCase()
+        for (let i = 0; i < ord.length; i++) {
+            let gjemtBokst = document.createElement("p")
+            gjemtBokst.className = "gjemt"
+            gjemtBokst.innerText = " "
+            resultatEl.appendChild(gjemtBokst)
+            
+        }
         hintEl.innerHTML="<i>'"+hint+"'</i>"
     }
-       
-
-      function tast(e){
-        let klick=String.fromCharCode(e.keyCode);
-        trykketEl.innerHTML="key register "+ klick.toUpperCase()
-     
- if (riktigOrd.includes(tastOrd)) {
-            console.log("Bokstaven finnes");
-        }
-        else {
-            console.log("Bokstaven finnes ikke");
-        }
-    }
- 
   
-    for (let i = 0; i <= 0; i++) {
+    for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", trykk);
     }
 
     function trykk(e) {
-        if(e.target.tagName === "BUTTON"){
-            trykketEl.innerHTML = e.target.innerText
-
-            if (e.target.innerText==="n"){
-            forok++
-            console.log("riktig")
+        let tastOrd = e.target.innerText
+        console.log(e.target.innerText);
+        if (riktigOrd.includes(tastOrd)) {
+            console.log("Bokstaven finnes");
         }
-        else{
+        else {
+            console.log("Bokstaven finnes ikke");
             attempts++;
             svar()
         }
-
-        }
+        
     }
     function svar(){
         let fasit = 10 - attempts + forok
