@@ -21,15 +21,16 @@
     }
     .gjettet {
         font-size: 50px;
+        margin: 5px;
     }
 </style>
 <body>
     <div id="resultat"></div>
     <p id="hint"></p>
-    <button>Nytt ord</button>
+    <button>New word</button>
     <div>
-         <p id="oversikt"> Bokstav er: </p>
-        <h2 id="ganger">du har brukt 10 forsøk</h2>
+         <p id="oversikt"> Your guess: </p>
+        <h2 id="ganger">You have 10 attempts</h2>
         <button class="knapp">A</button>
         <button class="knapp">B</button>
         <button class="knapp">C</button>
@@ -75,6 +76,7 @@
     let buttonEl = document.querySelector("button")
     let hintEl = document.querySelector("#hint")
     let riktigOrd = 0
+    let antallRiktigBokst = 0
     
 
     buttonEl.addEventListener("click", finnOrd)
@@ -99,7 +101,7 @@
             resultatEl.appendChild(gjemtBokstContain)
             
         }
-        hintEl.innerHTML="<i>'"+hint+"'</i>"
+        hintEl.innerHTML="Hint: "+"<i>'"+hint+"'</i>"
         buttonEl.removeEventListener("click", finnOrd)
     }
   
@@ -114,13 +116,13 @@
         console.log(e.target.innerText);
         if (riktigOrd.includes(tastOrd)) {
             console.log("Bokstaven finnes");
-            oversiktEl.innerHTML="Bokstav er riktig"
+            oversiktEl.innerHTML="Correct letter"
             e.target.style.backgroundColor = "green"
 
         }
         else {
             console.log("Bokstaven finnes ikke");
-            oversiktEl.innerHTML="Bokstav er feil, tenk hardere"
+            oversiktEl.innerHTML="Wrong letter, think harder"
             e.target.style.backgroundColor = "red"
             attempts++;
             svar()
@@ -132,7 +134,7 @@
 
     function svar(){
         let fasit = 10 - attempts + forok
-        gangerEl.innerHTML="du har: "+ fasit+ " forsøk"
+        gangerEl.innerHTML="You have: "+ fasit+ " attempts"
 
     }
 
