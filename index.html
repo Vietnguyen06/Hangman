@@ -70,6 +70,7 @@
         <button class="knapp">Y</button>
         <button class="knapp">Z</button>
     </div>
+    <button id="restart">RESTART</button>
     <div id="winOrLoss"></div>
 </body>
 </html>
@@ -82,6 +83,7 @@
     let buttons = document.querySelectorAll(".knapp");  
     let oversiktEl = document.querySelector("#oversikt")
     let winOrLossEl = document.querySelector("#winOrLoss")
+    let restartEl = document.querySelector("#restart")
    
     let attempts = 0
     let forok = 0
@@ -93,6 +95,11 @@
     let riktigGjett = 0
 
     buttonEl.addEventListener("click", finnOrd)
+    restartEl.addEventListener("click", knapp)
+ 
+ function knapp() {
+     window.location.reload()
+ }
 
     async function finnOrd() {
         for (let i = 0; i < buttons.length; i++) {
@@ -146,12 +153,28 @@
     e.target.removeEventListener("click", trykk);
     if (riktigGjett>=riktigOrd.length) {
         winOrLossEl.innerHTML= "You won, you cheater"
+        for (i=0; i< buttons.length;i++){
+        buttons[i].removeEventListener("click", trykk);
+        }
+
     }
 }
 
 
-    function svar() {
+function svar(e) {
         let fasit = 10 - attempts + forok
         gangerEl.innerHTML = "You have: " + fasit + " attempts"
+        if (fasit == 1) {
+            gangerEl.innerHTML = "1 FORSØK IGJEN, THINK HARDER"
+        }
+        if (fasit <= 0) {
+            for (let i = 0; i < buttons.length; i++) {
+                gangerEl.innerHTML = "Better luck next time"
+                buttons[i].removeEventListener("click", trykk);
+ 
+ 
+            }
+ 
+        }
     }
 </script>
