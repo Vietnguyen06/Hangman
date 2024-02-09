@@ -95,10 +95,10 @@
     buttonEl.addEventListener("click", finnOrd)
 
     async function finnOrd() {
-        /*for (let i = 0; i < buttons.length; i++) {
+        for (let i = 0; i < buttons.length; i++) {
             buttons[i].removeEventListener("click", trykk);
-            buttons[i].knapp.backgroundColor = ""
-        }*/
+            buttons[i].style.background=""
+        }
         const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
         const data = await fetch (url)
         const json = await data.json()
@@ -145,7 +145,7 @@
     }
     e.target.removeEventListener("click", trykk);
     if (riktigGjett>=riktigOrd.length) {
-        winOrLossEl.innerHTML= "Du vant"
+        winOrLossEl.innerHTML= "You won, you cheater"
     }
 }
 
