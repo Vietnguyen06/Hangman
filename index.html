@@ -6,30 +6,42 @@
     <title>Document</title>
 </head>
 <style>
+    body {
+        display: block;
+        text-align: center;
+    }
+    div{
+        margin: 10px;
+    }
     #resultat {
         display: flex;
         flex-direction: row;
         gap: 5px;
+        align-items: center;
+        justify-content: center;
     }
-    .gjemt {
+    .letter {
         border-bottom: 2px solid black;
-        width: 38px;
-    }
-    .gjemTekst {
-        visibility: hidden;
+        width: 30px;
+        margin-bottom: 40px;
         text-align: center;
+        font-weight: 400;
+        color: transparent;
     }
-    .gjettet {
-        font-size: 50px;
-        margin: 5px;
+    .letter.guessed {
+        border-color: transparent;
+        color: black;
+        font-size: 40px;
+        margin-bottom: 40px;
+        
     }
 </style>
 <body>
     <div id="resultat"></div>
-    <p id="hint"></p>
+    <div id="hint"></div>
     <button>New word</button>
     <div>
-         <p id="oversikt"> Your guess:  </p>
+         <div id="oversikt"> Your guess:  </div>
         <h2 id="ganger">You have 10 attempts</h2>
         <button class="knapp">A</button>
         <button class="knapp">B</button>
@@ -93,13 +105,10 @@
         console.log(hint);
         resultatEl.innerHTML = ""; // Clear previous content
         for (let i = 0; i < ord.length; i++) {
-            let gjemtBokstContain = document.createElement("div")
             let gjemtBokst = document.createElement("p")
-            gjemtBokstContain.className = "gjemt"
-            gjemtBokst.className = "gjemTekst"
+            gjemtBokst.className = "letter"
             gjemtBokst.innerText = riktigOrd[i]
-            gjemtBokstContain.appendChild(gjemtBokst)
-            resultatEl.appendChild(gjemtBokstContain)
+            resultatEl.appendChild(gjemtBokst)
         }
         hintEl.innerHTML="Hint: "+"<i>'"+hint+"'</i>"
         buttonEl.removeEventListener("click", finnOrd)
@@ -116,13 +125,10 @@
         console.log("Bokstaven finnes");
         oversiktEl.innerHTML = "Correct letter";
         e.target.style.backgroundColor = "green";
-        let gjemtEl = document.querySelectorAll(".gjemt")
-        let gjemTekstEl = document.querySelectorAll(".gjemTekst");
-        const antallBokstIOrdEl = gjemTekstEl
-        antallBokstIOrdEl.forEach((element, index) => {
-            if (riktigOrd[index] === tastOrd) {
-                element.classList.replace("gjemTekst","gjettet");
-                gjemtEl[index].classList.remove("gjemt");
+        [...riktigOrd].forEach((letter, index) => {
+            if (letter === tastOrd) {
+                resultatEl.querySelectorAll("p")[index].innerText = letter
+                resultatEl.querySelectorAll("p")[index].classList.add("guessed")
                 riktigGjett++
             }
         });
