@@ -4,116 +4,143 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        #resultat {
-            display: flex;
-            flex-direction: row;
-            gap: 5px;
-        }
-        .gjemt {
-            border-bottom: 2px solid black;
-            width: 38px;
-        }
-        .gjemTekst {
-            visibility: hidden;
-            text-align: center;
-        }
-        .gjettet {
-            font-size: 50px;
-            margin: 5px;
-            visibility: visible; /* Added */
-        }
-        .knapp {
-            background-color: transparent; /* Added */
-        }
-    </style>
 </head>
+<style>
+    #resultat {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+    }
+    .gjemt {
+        border-bottom: 2px solid black;
+        width: 38px;
+    }
+    .gjemTekst {
+        visibility: hidden;
+        text-align: center;
+    }
+    .gjettet {
+        font-size: 50px;
+    }
+    button {
+        border-radius: 25% ;
+    }
+</style>
 <body>
     <div id="resultat"></div>
     <p id="hint"></p>
-    <button>New word</button>
+    <button>Nytt ord</button>
     <div>
-        <p id="oversikt"> Your guess: </p>
-        <h2 id="ganger">You have 10 attempts</h2>
+         <p id="oversikt"> Bokstav er: </p>
+        <h2 id="ganger">du har brukt 10 forsøk</h2>
         <button class="knapp">A</button>
-        <!-- Buttons for other letters -->
+        <button class="knapp">B</button>
+        <button class="knapp">C</button>
+        <button class="knapp">D</button>
+        <button class="knapp">E</button>
+        <button class="knapp">F</button>
+        <button class="knapp">G</button>
+        <button class="knapp">H</button>
+        <button class="knapp">I</button>
+        <button class="knapp">J</button>
+        <button class="knapp">K</button>
+        <button class="knapp">L</button>
+        <button class="knapp">M</button>
+        <button class="knapp">N</button>
+        <button class="knapp">O</button>
+        <button class="knapp">P</button>
+        <button class="knapp">Q</button>
+        <button class="knapp">R</button>
+        <button class="knapp">S</button>
+        <button class="knapp">T</button>
+        <button class="knapp">U</button>
+        <button class="knapp">V</button>
+        <button class="knapp">W</button>
+        <button class="knapp">X</button>
+        <button class="knapp">Y</button>
+        <button class="knapp">Z</button>
     </div>
-
-    <script>
-        let bodyEl = document.querySelector("body")
-        let divEl = document.querySelector("div")
-        let gangerEl = document.querySelector("#ganger")
-        let buttons = document.querySelectorAll(".knapp");  
-        let oversiktEl = document.querySelector("#oversikt")
-        let resultatEl = document.querySelector("#resultat")
-        let buttonEl = document.querySelector("button")
-        let hintEl = document.querySelector("#hint")
-        let riktigOrd = 0
-        let attempts = 0
-        let forok = 0
-
-        buttonEl.addEventListener("click", finnOrd)
-
-        async function finnOrd() {
-            resetGame(); // Reset game state
-            const url = "https://www.wordgamedb.com/api/v1/words/random" 
-            const data = await fetch(url)
-            const json = await data.json()
-            let ord = json.word.toUpperCase()
-            let hint = json.hint
-            riktigOrd = ord
-            hintEl.innerHTML = "Hint: " + "<i>'" + hint + "'</i>"
-            for (let i = 0; i < ord.length; i++) {
-                let gjemtBokstContain = document.createElement("div")
-                let gjemtBokst = document.createElement("p")
-                gjemtBokstContain.className = "gjemt"
-                gjemtBokst.className = "gjemTekst"
-                gjemtBokst.innerText = riktigOrd[i]
-                gjemtBokstContain.appendChild(gjemtBokst)
-                resultatEl.appendChild(gjemtBokstContain)
-            }
-            buttonEl.removeEventListener("click", finnOrd)
-        }
-
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].addEventListener("click", trykk);
-        }
-
-        function trykk(e) {
-            let gjemTekstEl = document.querySelectorAll('.gjemTekst')
-            let tastOrd = e.target.innerText;
-            if (riktigOrd.includes(tastOrd)) {
-                oversiktEl.innerHTML = "Correct letter";
-                e.target.style.backgroundColor = "green";
-                gjemTekstEl.forEach((element, index) => {
-                    if (riktigOrd[index] === tastOrd) {
-                        gjemTekstEl[index].classList.replace("gjemTekst", "gjettet");
-                    }
-                });
-            } else {
-                oversiktEl.innerHTML = "Wrong letter, think harder";
-                e.target.style.backgroundColor = "red";
-                attempts++;
-                svar();
-            }
-            e.target.removeEventListener("click", trykk);
-        }
-
-        function svar() {
-            let fasit = 10 - attempts + forok
-            gangerEl.innerHTML = "You have: " + fasit + " attempts"
-        }
-
-        function resetGame() {
-            resultatEl.innerHTML = ""; // Clear displayed letters
-            oversiktEl.innerHTML = "Your guess:";
-            gangerEl.innerHTML = "You have 10 attempts";
-            attempts = 0; // Reset attempts counter
-            for (let i = 0; i < buttons.length; i++) {
-                buttons[i].style.backgroundColor = "transparent"; // Reset button styles
-                buttons[i].addEventListener("click", trykk); // Re-enable button clicks
-            }
-        }
-    </script>
 </body>
 </html>
+
+<script> 
+    let trykketEl = document.querySelector("#trykket")
+    let bodyEl = document.querySelector("body")
+    let divEl = document.querySelector("div")
+    let gangerEl = document.querySelector("#ganger")
+    let buttons = document.querySelectorAll(".knapp");  
+   
+    let attempts = 0
+    let forok = 0
+
+    let resultatEl = document.querySelector("#resultat")
+    let buttonEl = document.querySelector("button")
+    let hintEl = document.querySelector("#hint")
+    let riktigOrd = 0
+    
+
+    buttonEl.addEventListener("click", finnOrd)
+
+    async function finnOrd() {
+        const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
+        const url2 = "https://random-word-api.herokuapp.com/word" // hard
+        const data = await fetch (url)
+        const json = await data.json()
+        let ord = json.word.toUpperCase()
+        let hint = json.hint
+        riktigOrd = ord
+        console.log(ord);
+        console.log(hint);
+        resultatEl
+        for (let i = 0; i < ord.length; i++) {
+            let gjemtBokstContain = document.createElement("div")
+            let gjemtBokst = document.createElement("p")
+            gjemtBokstContain.className = "gjemt"
+            gjemtBokst.className = "gjemTekst"
+            gjemtBokst.innerText = riktigOrd[i]
+            gjemtBokstContain.appendChild(gjemtBokst)
+            resultatEl.appendChild(gjemtBokstContain)
+            
+        }
+        hintEl.innerHTML="<i>'"+hint+"'</i>"
+        buttonEl.removeEventListener("click", finnOrd)
+    }
+  
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener("click", trykk);
+    }
+
+    function trykk(e) {
+    let tastOrd = e.target.innerText;
+    let antallRiktigBokst = 0;
+    console.log(e.target.innerText);
+    if (riktigOrd.includes(tastOrd)) {
+        console.log("Bokstaven finnes");
+        oversiktEl.innerHTML = "Correct letter";
+        e.target.style.backgroundColor = "green";
+        gjemTekstEl.forEach((element, index) => {
+            console.log(`riktigOrd[${index}] = ${riktigOrd[index]}, tastOrd = ${tastOrd}`);
+            if (riktigOrd[index] === tastOrd) {
+                console.log("Adding class to gjemTekstEl at index:", index);
+                gjemTekstEl[index].classList.add("gjettet");
+            }
+        });
+    } else {
+        console.log("Bokstaven finnes ikke");
+        oversiktEl.innerHTML = "Wrong letter, think harder";
+        e.target.style.backgroundColor = "red";
+        attempts++;
+        svar();
+    }
+    e.target.removeEventListener("click", trykk);
+}
+        
+        
+
+    function svar(){
+        let fasit = 10 - attempts + forok
+        gangerEl.innerHTML="du har: "+ fasit+ " forsøk"
+
+    }
+    
+</script>
