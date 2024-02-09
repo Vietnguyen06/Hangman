@@ -105,8 +105,9 @@
         }
         hintEl.innerHTML="Hint: "+"<i>'"+hint+"'</i>"
         buttonEl.removeEventListener("click", finnOrd)
+        console.log("ord funnet, ferdig")
     }
-  
+console.log("hei")
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", trykk);
     }
@@ -121,9 +122,9 @@
         e.target.style.backgroundColor = "green";
         let gjemTekstEl = document.querySelectorAll('.gjemTekst')
         let gjemtEl= document.querySelectorAll('.gjemt')
-        gjemTekstEl.forEach((gjemTekstEl,gjemtEl, index) => {
-            console.log("endre visning");
+        gjemTekstEl.forEach((gjemTekstEl,gjemtEl,index) => { 
             if (riktigOrd[index] === tastOrd) {
+                console.log("endre visning");
                 gjemTekstEl[index].classList.replace("gjemTekst", "gjettet");
                 gjemtEl[index].classList.remove("gjemt")
             }
