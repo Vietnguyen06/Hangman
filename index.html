@@ -58,6 +58,7 @@
         <button class="knapp">Y</button>
         <button class="knapp">Z</button>
     </div>
+    <div id="winOrLoss"></div>
 </body>
 </html>
 
@@ -68,6 +69,7 @@
     let gangerEl = document.querySelector("#ganger")
     let buttons = document.querySelectorAll(".knapp");  
     let oversiktEl = document.querySelector("#oversikt")
+    let winOrLossEl = document.querySelector("#winOrLoss")
    
     let attempts = 0
     let forok = 0
@@ -76,6 +78,7 @@
     let buttonEl = document.querySelector("button")
     let hintEl = document.querySelector("#hint")
     let riktigOrd = ""
+    let antallRiktigOrd = 0
 
     buttonEl.addEventListener("click", finnOrd)
 
@@ -122,7 +125,8 @@
                 gjemtEl[index].classList.remove("gjemt");
             }
         });
-    } else {
+    } 
+    else {
         console.log("Bokstaven finnes ikke");
         oversiktEl.innerHTML = "Wrong letter, think harder";
         e.target.style.backgroundColor = "red";
