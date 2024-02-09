@@ -21,18 +21,16 @@
     }
     .gjettet {
         font-size: 50px;
-    }
-    button {
-        border-radius: 25% ;
+        margin: 5px;
     }
 </style>
 <body>
     <div id="resultat"></div>
     <p id="hint"></p>
-    <button>Nytt ord</button>
+    <button>New word</button>
     <div>
-         <p id="oversikt"> Bokstav er: </p>
-        <h2 id="ganger">du har brukt 10 forsøk</h2>
+         <p id="oversikt"> Your guess:  </p>
+        <h2 id="ganger">You have 10 attempts</h2>
         <button class="knapp">A</button>
         <button class="knapp">B</button>
         <button class="knapp">C</button>
@@ -69,6 +67,7 @@
     let divEl = document.querySelector("div")
     let gangerEl = document.querySelector("#ganger")
     let buttons = document.querySelectorAll(".knapp");  
+    let oversiktEl = document.querySelector("#oversikt")
    
     let attempts = 0
     let forok = 0
@@ -83,7 +82,6 @@
 
     async function finnOrd() {
         const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
-        const url2 = "https://random-word-api.herokuapp.com/word" // hard
         const data = await fetch (url)
         const json = await data.json()
         let ord = json.word.toUpperCase()
@@ -102,7 +100,7 @@
             resultatEl.appendChild(gjemtBokstContain)
             
         }
-        hintEl.innerHTML="<i>'"+hint+"'</i>"
+        hintEl.innerHTML="Hint: "+"<i>'"+hint+"'</i>"
         buttonEl.removeEventListener("click", finnOrd)
     }
   
@@ -118,6 +116,8 @@
         console.log("Bokstaven finnes");
         oversiktEl.innerHTML = "Correct letter";
         e.target.style.backgroundColor = "green";
+        let gjemTekstEl = document.querySelector(".gjemTekst")
+        let gjemtEl = document.querySelector(".gjemt")
         gjemTekstEl.forEach((element, index) => {
             console.log(`riktigOrd[${index}] = ${riktigOrd[index]}, tastOrd = ${tastOrd}`);
             if (riktigOrd[index] === tastOrd) {
@@ -139,7 +139,7 @@
 
     function svar(){
         let fasit = 10 - attempts + forok
-        gangerEl.innerHTML="du har: "+ fasit+ " forsøk"
+        gangerEl.innerHTML="You have: "+ fasit+ " attempts"
 
     }
     
