@@ -78,7 +78,7 @@
     let buttonEl = document.querySelector("button")
     let hintEl = document.querySelector("#hint")
     let riktigOrd = ""
-    let antallRiktigOrd = 0
+    let riktigGjett = 0
 
     buttonEl.addEventListener("click", finnOrd)
 
@@ -123,6 +123,7 @@
             if (riktigOrd[index] === tastOrd) {
                 element.classList.replace("gjemTekst","gjettet");
                 gjemtEl[index].classList.remove("gjemt");
+                riktigGjett++
             }
         });
     } 
@@ -134,6 +135,9 @@
         svar();
     }
     e.target.removeEventListener("click", trykk);
+    if (riktigGjett>=riktigOrd.length) {
+        winOrLossEl.innerHTML= "Du vant"
+    }
 }
 
 
