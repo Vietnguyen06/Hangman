@@ -68,6 +68,8 @@
     let gangerEl = document.querySelector("#ganger")
     let buttons = document.querySelectorAll(".knapp");  
     let oversiktEl = document.querySelector("#oversikt")
+    
+
    
     let attempts = 0
     let forok = 0
@@ -76,7 +78,7 @@
     let buttonEl = document.querySelector("button")
     let hintEl = document.querySelector("#hint")
     let riktigOrd = 0
-    let antallRiktigBokst = 0
+    
     
 
     buttonEl.addEventListener("click", finnOrd)
@@ -109,26 +111,33 @@
         buttons[i].addEventListener("click", trykk);
     }
 
-  function trykk(e) {
-        
-        let tastOrd = e.target.innerText
-        e.target.addEventListener("click", trykk)
-        console.log(e.target.innerText);
-        if (riktigOrd.includes(tastOrd)) {
-            console.log("Bokstaven finnes");
-            oversiktEl.innerHTML="Correct letter"
-            e.target.style.backgroundColor = "green"
-
-        }
-        else {
-            console.log("Bokstaven finnes ikke");
-            oversiktEl.innerHTML="Wrong letter, think harder"
-            e.target.style.backgroundColor = "red"
-            attempts++;
-            svar()
-        }
-        e.target.removeEventListener("click", trykk)
-  }
+    function trykk(e) {
+    let tastOrd = e.target.innerText;
+    let antallRiktigBokst = 0;
+    console.log(e.target.innerText);
+    if (riktigOrd.includes(tastOrd)) {
+        console.log("Bokstaven finnes");
+        oversiktEl.innerHTML = "Correct letter";
+        e.target.style.backgroundColor = "green";
+        let gjemTekstEl = document.querySelectorAll('.gjemTekst')
+        let gjemtEl= document.querySelectorAll('.gjemt')
+        gjemTekstEl.forEach((gjemTekstEl,gjemtEl, index) => {
+            console.log("endre visning");
+            if (riktigOrd[index] === tastOrd) {
+                gjemTekstEl[index].classList.replace("gjemTekst", "gjettet");
+                gjemtEl[index].classList.remove("gjemt")
+            }
+        });
+    } 
+     else {
+        console.log("Bokstaven finnes ikke");
+        oversiktEl.innerHTML = "Wrong letter, think harder";
+        e.target.style.backgroundColor = "red";
+        attempts++;
+        svar();
+    }
+    e.target.removeEventListener("click", trykk);
+}
         
         
 
