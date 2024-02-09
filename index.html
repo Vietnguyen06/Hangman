@@ -95,6 +95,10 @@
     buttonEl.addEventListener("click", finnOrd)
 
     async function finnOrd() {
+        /*for (let i = 0; i < buttons.length; i++) {
+            buttons[i].removeEventListener("click", trykk);
+            buttons[i].knapp.backgroundColor = ""
+        }*/
         const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
         const data = await fetch (url)
         const json = await data.json()
@@ -103,7 +107,7 @@
         riktigOrd = ord
         console.log(ord);
         console.log(hint);
-        resultatEl.innerHTML = ""; // Clear previous content
+        resultatEl.innerHTML = "";
         for (let i = 0; i < ord.length; i++) {
             let gjemtBokst = document.createElement("p")
             gjemtBokst.className = "letter"
@@ -111,11 +115,10 @@
             resultatEl.appendChild(gjemtBokst)
         }
         hintEl.innerHTML="Hint: "+"<i>'"+hint+"'</i>"
-        buttonEl.removeEventListener("click", finnOrd)
-    }
-  
-    for (let i = 0; i < buttons.length; i++) {
+        for (let i = 0; i < buttons.length; i++) {
         buttons[i].addEventListener("click", trykk);
+    }
+
     }
 
     function trykk(e) {
