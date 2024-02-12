@@ -1,57 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-       <h3>good luck!</h3>
-     <h1>hangman game</h1>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hangman Game</title>
+    <style>
+        h1 {
+            color: palevioletred;
+        }
+
+        body {
+            background-color: pink;
+            display: block;
+            text-align: center;
+        }
+
+        div {
+            margin: 10px;
+        }
+
+        #resultat {
+            display: flex;
+            flex-direction: row;
+            gap: 5px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .letter {
+            border-bottom: 2px solid black;
+            width: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 400;
+            color: transparent;
+        }
+
+        .letter.guessed {
+            border-color: transparent;
+            color: black;
+            font-size: 40px;
+            margin-bottom: 90px;
+        }
+
+        #hangman-image {
+            font-size: 40px;
+            color: red;
+        }
+
+        ::selection {
+            color: transparent;
+        }
+    </style>
 </head>
-<style>
-      h3{
-        color: palevioletred;
-    }
-      h1{
-        color: palevioletred;
-    }
-    body {
-        background-color: pink;
-        display: block;
-        text-align: center;
-    }
-    div{
-        margin: 10px;
-    }
-    #resultat {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        align-items: center;
-        justify-content: center;
-    }
-    .letter {
-        border-bottom: 2px solid black;
-        width: 30px;
-        margin-bottom: 40px;
-        text-align: center;
-        font-weight: 400;
-        color: transparent;
-    }
-    .letter.guessed {
-        border-color: transparent;
-        color: black;
-        font-size: 40px;
-        margin-bottom: 40px;
-        
-    }
-</style>
+
 <body>
+    <h1>Hangman Game</h1>
     <div id="resultat"></div>
     <div id="hint"></div>
-    <button>New word</button>
-    <div>
-         <div id="oversikt"> Your guess:  </div>
-        <h2 id="ganger">You have 10 attempts</h2>
+    <button id="newWord">New word</button>
+    <div id="oversikt"> Your guess: </div>
+    <h2 id="ganger">You have 6 attempts</h2>
+    <div id="knappContain">
         <button class="knapp">A</button>
         <button class="knapp">B</button>
         <button class="knapp">C</button>
@@ -79,111 +90,123 @@
         <button class="knapp">Y</button>
         <button class="knapp">Z</button>
     </div>
-    <button id="restart">RESTART</button>
+
     <div id="winOrLoss"></div>
-</body>
-</html>
+    <div id="hangman-image"> </div>
 
-<script> 
-    let trykketEl = document.querySelector("#trykket")
-    let bodyEl = document.querySelector("body")
-    let divEl = document.querySelector("div")
-    let gangerEl = document.querySelector("#ganger")
-    let buttons = document.querySelectorAll(".knapp");  
-    let oversiktEl = document.querySelector("#oversikt")
-    let winOrLossEl = document.querySelector("#winOrLoss")
-    let restartEl = document.querySelector("#restart")
-   
-    let attempts = 0
-    let forok = 0
+    <script>
+        let buttons = document.querySelectorAll(".knapp");
+        let hintEl = document.querySelector("#hint")
+        let oversiktEl = document.querySelector("#oversikt")
+        let winOrLossEl = document.querySelector("#winOrLoss")
+        let gangerEl = document.querySelector("#ganger")
+        let resultatEl = document.querySelector("#resultat")
+        let newWordBtn = document.getElementById("newWord");
 
-    let resultatEl = document.querySelector("#resultat")
-    let buttonEl = document.querySelector("button")
-    let hintEl = document.querySelector("#hint")
-    let riktigOrd = ""
-    let riktigGjett = 0
+        let attempts = 0;
+        let riktigOrd = "";
+        let riktigGjett = 0;
+        let forok = 0
 
-    buttonEl.addEventListener("click", finnOrd)
-    restartEl.addEventListener("click", knapp)
- 
- function knapp() {
-     window.location.reload()
- }
+        newWordBtn.addEventListener("click", fetchNewWord);
 
-    async function finnOrd() {
-        for (let i = 0; i < buttons.length; i++) {
-            buttons[i].removeEventListener("click", trykk);
-            buttons[i].style.background=""
+        async function fetchNewWord() {
+            resetGame();
+            const url = "https://www.wordgamedb.com/api/v1/words/random";
+            const response = await fetch(url);
+            const data = await response.json();
+            riktigOrd = data.word.toUpperCase();
+            let hint = data.hint
+            hintEl.innerHTML = "Hint: " + "<i>'" + hint + "'</i>"
+            displayWord();
+
         }
-        const url = "https://www.wordgamedb.com/api/v1/words/random" //ez
-        const data = await fetch (url)
-        const json = await data.json()
-        let ord = json.word.toUpperCase()
-        let hint = json.hint
-        riktigOrd = ord
-        console.log(ord);
-        console.log(hint);
-        resultatEl.innerHTML = "";
-        for (let i = 0; i < ord.length; i++) {
-            let gjemtBokst = document.createElement("p")
-            gjemtBokst.className = "letter"
-            gjemtBokst.innerText = riktigOrd[i]
-            resultatEl.appendChild(gjemtBokst)
-        }
-        hintEl.innerHTML="Hint: "+"<i>'"+hint+"'</i>"
-        for (let i = 0; i < buttons.length; i++) {
-        buttons[i].addEventListener("click", trykk);
-    }
 
-    }
 
-    function trykk(e) {
-    let tastOrd = e.target.innerText;
-    console.log(tastOrd);
-    if (riktigOrd.includes(tastOrd)) {
-        console.log("Bokstaven finnes");
-        oversiktEl.innerHTML = "Correct letter";
-        e.target.style.backgroundColor = "green";
-        [...riktigOrd].forEach((letter, index) => {
-            if (letter === tastOrd) {
-                resultatEl.querySelectorAll("p")[index].innerText = letter
-                resultatEl.querySelectorAll("p")[index].classList.add("guessed")
-                riktigGjett++
+        function displayWord() {
+            resultatEl.innerHTML = "";
+            for (let i = 0; i < riktigOrd.length; i++) {
+                let gjemtBokst = document.createElement("p");
+                gjemtBokst.className = "letter";
+                gjemtBokst.innerText = riktigOrd[i];
+                resultatEl.appendChild(gjemtBokst);
             }
-        });
-    } 
-    else {
-        console.log("Bokstaven finnes ikke");
-        oversiktEl.innerHTML = "Wrong letter, think harder";
-        e.target.style.backgroundColor = "red";
-        attempts++;
-        svar();
-    }
-    e.target.removeEventListener("click", trykk);
-    if (riktigGjett>=riktigOrd.length) {
-        winOrLossEl.innerHTML= "You won, you cheater"
-        for (i=0; i< buttons.length;i++){
-        buttons[i].removeEventListener("click", trykk);
         }
 
-    }
-}
-
-
-function svar(e) {
-        let fasit = 10 - attempts + forok
-        gangerEl.innerHTML = "You have: " + fasit + " attempts"
-        if (fasit == 1) {
-            gangerEl.innerHTML = "1 FORSØK IGJEN, THINK HARDER"
+        function trykk(e) {
+            let tastOrd = e.target.innerText;
+            if (riktigOrd.includes(tastOrd)) {
+                oversiktEl.innerHTML = "Correct letter";
+                e.target.style.backgroundColor = "green";
+                [...riktigOrd].forEach((letter, index) => {
+                    if (letter === tastOrd) {
+                        resultatEl.querySelectorAll("p")[index].innerText = letter;
+                        resultatEl.querySelectorAll("p")[index].classList.add("guessed");
+                        riktigGjett++;
+                    }
+                });
+            } else {
+                oversiktEl.innerHTML = "Wrong letter, think harder";
+                e.target.style.backgroundColor = "red";
+                attempts++;
+                checkGameOver();
+                displayHangman();
+                svar()
+            }
+            e.target.removeEventListener("click", trykk);
+            if (riktigGjett >= riktigOrd.length) {
+                winOrLossEl.innerHTML = "You won, you cheater";
+                for (i = 0; i < buttons.length; i++) {
+                    buttons[i].removeEventListener("click", trykk);
+                }
+            }
         }
-        if (fasit <= 0) {
+
+        function checkGameOver() {
+            let remainingAttempts = 10 - attempts + riktigGjett;
+            if (remainingAttempts === 0) {
+                winOrLossEl.innerHTML = "Better luck next time";
+                for (let i = 0; i < buttons.length; i++) {
+                    buttons[i].removeEventListener("click", trykk);
+                }
+
+            }
+        }
+
+
+        function resetGame() {
+            attempts = 0;
+            riktigGjett = 0;
+            winOrLossEl.innerHTML = "";
+            oversiktEl.innerHTML = "";
+            displayHangman();
             for (let i = 0; i < buttons.length; i++) {
-                gangerEl.innerHTML = "Better luck next time"
-                buttons[i].removeEventListener("click", trykk);
- 
- 
+                buttons[i].style.backgroundColor = "";
+                buttons[i].addEventListener("click", trykk);
             }
- 
         }
-    }
-</script>
+
+        function svar() {
+            let fasit = 6 - attempts + forok
+            gangerEl.innerHTML = "You have: " + fasit + " attempts"
+            if (fasit == 1) {
+                gangerEl.innerHTML = "1 ATTEMPT LEFT, THINK HARD"
+            }
+            if (fasit <= 0) {
+                for (let i = 0; i < buttons.length; i++) {
+                    gangerEl.innerHTML = "Better luck next time"
+                    buttons[i].removeEventListener("click", trykk);
+
+
+                }
+            }
+        }
+
+        function displayHangman() {
+            let hangmanImage = document.getElementById("hangman-image");
+            hangmanImage.textContent = "X".repeat(attempts);
+        }
+    </script>
+</body>
+
+</html>
