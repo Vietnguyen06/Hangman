@@ -49,9 +49,7 @@
             color: red;
         }
 
-        ::selection {
-            color: transparent;
-        }
+
     </style>
 </head>
 
@@ -128,7 +126,6 @@
             for (let i = 0; i < riktigOrd.length; i++) {
                 let gjemtBokst = document.createElement("p");
                 gjemtBokst.className = "letter";
-                gjemtBokst.innerText = riktigOrd[i];
                 resultatEl.appendChild(gjemtBokst);
             }
         }
